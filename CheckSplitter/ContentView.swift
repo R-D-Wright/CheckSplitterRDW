@@ -14,6 +14,11 @@ struct ContentView: View {
     
     @State var numOfPeople = 0
     
+    @State var tipPercent = 0
+    
+    // Tip Percentage options used in Picker below
+    let tipPercentages = [0, 10, 15, 20]
+    
     var body: some View {
         
         NavigationView {
@@ -37,7 +42,20 @@ struct ContentView: View {
                 }
                 
                 Section(header: Text("Select Tip Percentage")) {
-                    Text("0% 10% 15% 20%")
+                    
+                    
+                    Picker("Tip Percentage", selection: $tipPercent) {
+                        
+                        // Looping through the Int values in the tipPercentages array to create a Picker option for each percent
+                        ForEach(tipPercentages, id: \.self) { prct in
+                            
+                            // Using the percent format to display the values as percentages
+                            Text(prct, format: .percent)
+                        }
+                    }
+                    // Using the segmented picker style to display the options in a row
+                    .pickerStyle(.segmented)
+                    
                 }
                 
                 Button {
