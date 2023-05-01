@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  CheckSplitter
 //
-//  Created by Matthew RIley on 4/11/23.
+//  Created by Drake Wright on 4/11/23.
 //
 
 import SwiftUI
@@ -16,8 +16,23 @@ struct ContentView: View {
     
     @State var tipPercent = 0
     
+    @State var totalPerPerson: Double = 0
+    
     // Tip Percentage options used in Picker below
     let tipPercentages = [0, 10, 15, 20]
+    
+    // Function used to calculate total per person
+    func getTotals() {
+        
+        // Using Double() to convert the numbers to Doubles (AKA Decimals) so they can be multipled and divided by values in Double format below
+        let peopleCount = Double(numOfPeople)
+        let tipSelection = Double(tipPercent)
+        
+        let tipAmount = checkAmount / 100 * tipSelection
+        let grandTotal = checkAmount + tipAmount
+        
+        totalPerPerson = grandTotal / peopleCount
+    }
     
     var body: some View {
         
@@ -58,14 +73,17 @@ struct ContentView: View {
                     
                 }
                 
+                // Button that calculates total for each person when clicked by running the getTotals function
                 Button {
-                    print("Hello World")
+                    getTotals()
                 } label: {
                     Text("CLICK TO SPLIT CHECK")
                 }
 
                 Section(header: Text("Each person pays...")) {
-                    Text("$0.00")
+                    
+                    // Displays the total for each person in US Dollar format
+                    Text(totalPerPerson, format: .currency(code: "USD"))
                 }
             }
             .navigationTitle("Check Splitter")
